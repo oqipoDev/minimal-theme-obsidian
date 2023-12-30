@@ -1,0 +1,549 @@
+/*@settings
+name: Example
+id: example
+settings:
+	-
+		id: heading
+		title: Heading
+		title.es: Titular
+		type: heading
+		level: 1
+	-
+		id: toggle-class-name
+		title: Toggle
+		title.es: Interruptor
+		type: class-toggle
+		description: Toggles a class
+		description.es: Activa o desactiva una clase
+	-
+		id: heading
+		title: Heading
+		title.es: Titular
+		type: heading
+		level: 2
+	-
+		id: option
+		title: Option
+		title.es: Opción
+		description: Selects lul
+		description.es: Selecciona lul
+		type: class-select
+		allowEmpty: false
+		default: 'option-class-name'
+		options:
+		-
+			label: Name
+			value: 'option-class-name'
+	-
+		id: heading
+		title: Heading
+		title.es: Titular
+		type: heading
+		level: 3
+	-
+		id: slider-var-name
+		title: Slider
+		title.es: Deslizador
+		type: variable-number-slider
+		default: 5
+		min: 0
+		max: 10
+		step: 1
+		format: px
+	-
+		id: select-var-name
+		title: Variable
+		title.es: Variable
+		type: variable-select
+		default: Value 1
+		options:
+			- 
+				label: Option
+				value: Value 1
+*/
+
+/*
+================================================================================================================================
+			COMMON CODE
+================================================================================================================================
+Code common to all of oqipo's themes
+*/
+
+body {
+	--callout-padding: var(--size-4-3) var(--size-4-3) var(--size-4-3) 24px;
+	--file-header-font-weight: 600;
+	--embed-max-height: 80vh;
+
+	/* LESS visible */
+	--collapse-icon-color: var(--text-muted);
+	--collapse-icon-color-collapsed: var(--text-faint);
+	/* MORE visible */
+	--list-marker-color: var(--text-muted);
+}
+
+/*
+			MARKDOWN
+*/
+
+/* Header */
+.mod-header {
+	margin-bottom: var(--inline-title-margin-bottom);
+}
+.inline-title {
+	margin-bottom: 0.25em;
+}
+/*
+.cm-fold-indicator .collapse-indicator,
+.cm-gutterElement .collapse-indicator*/
+.collapse-indicator/*, .fold-gutter*/ {
+	opacity: 0.5;
+}
+.metadata-container {
+	font-size: 0.87em;
+	margin: 0;
+	padding: 0;
+}
+.metadata-properties-heading {
+	margin-left: 22px;
+	margin-bottom: var(--size-2-1);
+	/* Extend click target */
+	width: 25ch;
+}
+.metadata-add-button {
+	box-shadow: var(--input-shadow);
+	background-color: var(--interactive-normal);
+}
+.metadata-add-button:hover {
+	box-shadow: var(--input-shadow-hover);
+	background-color: var(--interactive-hover);
+}
+
+.markdown-rendered h1, h1, .markdown-rendered h2, h2,
+.markdown-rendered h3, h3, .markdown-rendered h4, h4,
+.markdown-rendered h5, h5, .markdown-rendered h6, h6 {
+	/* Reset from app CSS */
+	letter-spacing: inherit;
+}
+
+/* Copy code button */
+.markdown-rendered pre > button.copy-code-button:hover {
+	color: var(--text-normal);
+	font-weight: bold;
+}
+.markdown-rendered pre:not(:hover) > button.copy-code-button {
+	display: initial;
+	color: var(--text-faint);
+	letter-spacing: initial;
+}
+
+/* Footnotes */
+.footnote-backref {
+	/* Make consistent with footnote link */
+	color: var(--interactive-accent);
+	/* Space slightly*/
+	padding: 0 0.25ch;
+}
+.footnote-backref:hover {
+	color: var(--interactive-accent-hover);
+	font-weight: bold;
+}
+
+/* Callouts */
+.callout {
+	padding: 0;
+}
+.callout-title {
+	align-items: center;
+	padding: var(--callout-padding);
+}
+.callout.is-collapsible > .callout-title {
+	cursor: pointer;
+}
+.callout-icon, .callout-fold {
+	align-self: initial;
+	margin: initial;
+}
+.callout-content {
+	padding: var(--callout-padding);
+	padding-top: 0;
+}
+.callout-title-inner > h1, .callout-title-inner > h2,
+.callout-title-inner > h3, .callout-title-inner > h4,
+.callout-title-inner > h5, .callout-title-inner > h6 {
+	/* Tighten spacing on callouts */
+	margin: var(--size-2-2) 0;
+}
+
+/* Callout content */
+.callout {
+	--h1-color:							rgba(var(--callout-color), 75%);
+	--h2-color:							rgb(var(--callout-color));
+	--link-color:						rgb(var(--callout-color));
+	--link-unresolved-color:			rgb(var(--callout-color));
+	--link-external-color:				rgb(var(--callout-color));
+	--checkbox-color:					rgb(var(--callout-color));
+	--checkbox-color-hover:				rgba(var(--callout-color), 75%);
+	--link-decoration-color:			rgba(var(--callout-color), 50%);
+	--link-unresolved-decoration-color: rgba(var(--callout-color), 50%);
+	--link-color-hover:					rgba(var(--callout-color), 85%);
+	--link-external-color-hover:		rgba(var(--callout-color), 85%);
+	--link-unresolved-color-hover:		rgba(var(--callout-color), 45%);
+}
+
+/* Tighten spacing */
+.callout-content > :first-child {
+	margin-block-start: var(--size-4-1);
+}
+.callout-content > :last-child {
+	margin-block-end: var(--size-4-1);
+}
+
+.cm-s-obsidian span.cm-formatting-quote {
+	/* Make quote marks (>) more visible */
+	color: var(--text-muted);
+}
+
+/* Embeds */
+.markdown-embed {
+	/* Hide header */
+	--inline-title-margin-bottom: 0;
+}
+.markdown-embed[alt=""] .embed-title {
+	/* Use an empty alt to hide the title: ![[Title|]] */
+	display: none;
+}
+.embed-title {
+	font-size: calc(var(--font-text-size) * 0.85);
+	line-height: 1em;
+
+	top: 4px;
+	padding-top: var(--size-4-2);
+	padding-bottom: var(--size-4-2);
+	right: 0;
+	
+	color: var(--text-muted);
+}
+
+/* Tables */
+.markdown-rendered thead tr > th {
+	/* Extra flair for top row */
+	border-bottom-width: 3px;
+	border-bottom-style: double;	
+}
+
+/*
+			UI
+--------------------------------------------------------------------------------------------------------------------------------
+*/
+
+/* NAVIGATION */
+
+.nav-folder-title {
+	--nav-item-weight: 600;
+	--nav-item-weight-hover: 700;
+}
+.nav-folder-title:hover {
+	/* Brighten up expand caret */
+	--nav-collapse-icon-color: var(--text-muted);
+	--nav-collapse-icon-color-collapsed: var(--text-muted);
+}
+.search-result:not(.is-collapsed) .search-result-file-title {
+	color: var(--text-muted);
+}
+
+/* TABS */
+
+.workspace-tab-header-container {
+	padding: initial;
+}
+.workspace-tab-header-container-inner {
+	/* Scroll in tab list */
+	scroll-behavior: smooth;
+}
+.mod-left-split .workspace-tab-header-container-inner,
+.mod-right-split .workspace-tab-header-container-inner {
+	margin: 0;
+	padding: var(--size-4-1);
+}
+.mod-left-split .workspace-tab-header,
+.mod-right-split .workspace-tab-header {
+	/* Variable size */
+	width: 128px;
+	min-width: 32px;
+}
+
+/* TOOLTIPS */
+
+.tooltip {
+	/* Make dark mode also inverted */
+	--background-modifier-message: var(--text-normal);
+	color: var(--background-primary);
+}
+
+/* Modals */
+.suggestion-prefix {
+	color: var(--text-faint);
+}
+
+/*
+			PLUGINS
+--------------------------------------------------------------------------------------------------------------------------------
+*/
+
+/* SLIDES PLUGIN */
+
+.reveal {
+	background: radial-gradient(var(--background-primary) 60%,
+								var(--background-primary-alt)); 
+	--r-background-color: var(--background-primary); /*TODO make an option*/
+	--r-main-color: var(--text-normal);
+	--r-heading-color: var(--text);
+
+	--r-heading-text-transform: none;
+	--r-link-color: var(--link-color);
+	--r-link-color-hover: var(--link-color-hover);
+	--r-main-font: inherit;
+	--r-main-font-size: 2em;
+}
+
+.reveal mark {
+	position: relative;
+	background-color: var(--text-highlight-bg);
+	color: inherit;
+}
+.reveal .navigate-left,
+.reveal .navigate-right {
+	/* Delete undesired shadow (comes from button:not(.clickable-icon)) */
+	box-shadow: none;
+}
+
+/*Animation*/
+.reveal .slides > section {
+	transition: transform-origin .8s cubic-bezier(.26,.86,.44,.985),
+				transform .2s cubic-bezier(.26,.86,.44,.985),
+				visibility .8s cubic-bezier(.26,.86,.44,.985),
+				opacity .4s cubic-bezier(.26,.86,.44,.985);
+}
+.reveal .progress span {
+	transition: transform .2s cubic-bezier(.26,.86,.44,.985);
+}
+
+/* Hide frontmatter */
+.present > .frontmatter,
+.present > .frontmatter-container {
+	display: none;
+}
+
+/* KANBAN PLUGIN */
+
+.kanban-plugin {
+	box-shadow: inset var(--text-faint) 0 2px 4px -2px;
+	background-color: var(--background-primary-alt);
+}
+/* Make the "New item" button consistent */
+button.kanban-plugin__new-item-button {
+	background-color: var(--interactive-normal);
+}
+button.kanban-plugin__new-item-button:hover {
+	background-color: var(--interactive-normal);
+	color: var(--text-normal);
+	box-shadow: var(--input-shadow-hover);
+}
+
+.kanban-plugin__drag-container > .kanban-plugin__item-wrapper > .kanban-plugin__item {
+	border: none;
+}
+.kanban-plugin__item-metadata>.kanban-plugin__item-metadata-date-wrapper.has-background {
+	margin: 0;
+}
+.kanban-plugin__item-tags:not(:empty) {
+	padding: 0;
+}
+
+/* BREADCRUMBS PLUGIN */
+
+.BC-trail.is-readable-line-width.markdown-preview-sizer.markdown-preview-section {
+	max-width: var(--file-line-width);
+	/* Fix: Width is incorrectly set in element properties */
+	width: initial !important;
+}
+.BC-trail-path-container {
+	/* Indent trail */
+	padding: 1px 2ch;
+}
+.BC-prevs {
+	/* Fix: Separator is definded twice, rendering as a bold line */
+	--background-modifier-border: transparent;
+}
+/* Replace "prev" and "next" with dingbats */
+.internal-link.BC-Link > strong { display: none; }
+.internal-link.BC-Link.BC-prev::before { content: "←"; }
+.internal-link.BC-Link.BC-next::after { content: "→"; }
+/* Replace trail dingbats */
+.BC-trail-sep { font-size: 0; }
+.BC-trail-sep::after {
+	font-size: 1rem;
+	content: " \› ";
+}
+
+/* Tree view is partially unsupported, it's terribly made and too much for me */
+/* Matrix view*/
+.internal-link.BC-Link {
+	/* Force pointer (Matrix view) */
+	cursor: pointer;
+}
+/*Buttons*/
+.workspace-leaf-content[data-type=BC-matrix] .view-content {
+	padding-top: 0;
+	/* Hijack */
+	--link-color: var(--nav-item-color);
+	--text-accent: var(--nav-item-color);
+	--link-color-hover: var(--nav-item-color-hover);
+	--text-accent-hover: var(--nav-item-color-hover);
+}
+.BC-matrix-buttons {
+	padding: var(--size-4-2) 0;
+	
+	/* Copied from .nav-buttons-container */
+	display: flex;
+	justify-content: center;
+	gap: var(--size-2-1);
+}
+.BC-matrix-buttons > button.svelte-barhym {
+	/* Copied from .clickable-icon */
+	margin: 0;
+	padding: var(--size-2-2) var(--size-2-3);
+	cursor: var(--cursor);
+	background-color: transparent;
+	border-radius: var(--clickable-icon-radius);
+	color: var(--icon-color);
+	opacity: var(--icon-opacity);
+	/* Inherited from button */
+	height: auto;
+	box-shadow: none;
+	font-size: var(--icon-size);
+}
+.BC-matrix-buttons > button.svelte-barhym:hover {
+	/* Copied from .clickable-icon:hover */
+	opacity: var(--icon-opacity-hover);
+	color: var(--icon-color-hover);
+	background-color: var(--background-modifier-hover);
+}
+/* Imitate Outgoing Links' style*/
+.BC-Matrix.svelte-1p44ezg.svelte-1p44ezg {
+	padding: 0;
+}
+div.BC-Matrix.svelte-1p44ezg > div.svelte-1p44ezg {
+	border: none;
+	margin: 0;
+}
+div.BC-Matrix-square.svelte-1p44ezg.svelte-1p44ezg {
+	border: none;
+}
+.BC-Matrix-header.svelte-1p44ezg {
+	font-size: 1em;
+	font-weight: normal;
+}
+h4.BC-Matrix-header.svelte-1p44ezg.svelte-1p44ezg,
+h6.BC-Matrix-header.svelte-1p44ezg.svelte-1p44ezg {
+	padding: 0 var(--size-4-1);
+	pointer-events: none;
+}
+h6.BC-Matrix-header.svelte-1p44ezg.svelte-1p44ezg {
+	font-weight: normal;
+	color: var(--text-faint);
+}
+.BC-Matrix-square:hover h6.BC-Matrix-header.svelte-1p44ezg.svelte-1p44ezg {
+	color: var(--text-muted);
+}
+ol > li.svelte-1p44ezg {
+	padding: 0;
+	margin: var(--size-2-1) 0;
+	border-radius: var(--radius-s);
+}
+li.svelte-1p44ezg > div {
+	padding: var(--size-2-1) 0;
+}
+li.svelte-1p44ezg::marker {
+	color: var(--text-faint);
+}
+ol > li.svelte-1p44ezg:hover {
+	background-color: var(--nav-item-background-hover);
+	font-weight: var(--nav-item-weight-hover);
+}
+
+/* STYLE SETTINGS PLUGIN */
+
+.style-settings-heading[data-level="0"] {
+	padding-top: 0;
+	margin-top: 0;
+}
+.style-settings-container,
+.style-settings-heading[data-level="0"] + .style-settings-container {
+	padding-left: 2ch;
+}
+.setting-item + .setting-item-heading,
+.style-settings-heading {
+	margin-bottom: 0.5em;
+	margin-top: 0;
+}
+.style-settings-heading[data-level="0"] .setting-item-name {
+	font-size: 1.8em;
+}.style-settings-heading[data-level="1"] .setting-item-name {
+	font-size: 1.6em;
+}.style-settings-heading[data-level="2"] .setting-item-name {
+	font-size: 1.42em;
+}.style-settings-heading[data-level="3"] .setting-item-name {
+	font-size: 1.26em;
+}.style-settings-heading[data-level="4"] .setting-item-name {
+	font-size: 1.125em;
+}
+
+/* FOLDER NOTE PLUGIN */
+
+.has-folder-note {
+	/* Revert to original colour */
+	--text-nav-selected: var(--nav-item-color);
+	cursor: pointer;
+}
+.has-folder-note::before {
+	/* Little folder icon */
+	box-sizing: border-box;
+	content: "";
+	margin: auto 0.5ch auto 0;
+	border: solid var(--nav-item-color);
+	border-width: 0 0 6px 5px;
+	height: 8px;
+	width: 9px;
+}
+
+/* ICON SHORTCODES PLUGIN */
+.isc-icon>img, .isc-icon>svg {
+	/* Undo forced cursor */
+	cursor: inherit !important;
+}
+
+/*
+			CUSTOM
+--------------------------------------------------------------------------------------------------------------------------------
+*/
+
+/* Custom image attributes */
+
+span[src$="#color-invert-b"], span[src$="color-invert"] {
+	filter: var(--color-invert-filter-b);
+}
+span[src$="#color-invert-w"] {
+	filter: var(--color-invert-filter-w);
+}
+span[src$="#invert-b"], span[src$="#invert"] {
+	filter: var(--invert-filter-b);
+}
+span[src$="#invert-w"] {
+	filter: var(--invert-filter-w);
+}
+span[alt$="center"] {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
