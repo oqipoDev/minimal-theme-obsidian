@@ -212,6 +212,10 @@ body {
 	/* Use an empty alt to hide the title: ![[Title|]] */
 	display: none;
 }
+.markdown-embed[src*="#"][alt=""] .markdown-preview-section > .mod-header + div:has(h1,h2,h3,h4,h5,h6) {
+	/* Also hide the first heading on section embeds */
+	display: none;
+}
 .embed-title {
 	font-size: calc(var(--font-text-size) * 0.85);
 	line-height: 1em;
